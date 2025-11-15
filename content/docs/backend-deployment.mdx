@@ -1,0 +1,372 @@
+---
+title: Backend Deployment
+description: Deploy your Scrawn backend locally or to production
+---
+
+This guide covers running Scrawn backend locally for development and deploying it to production. Choose the option that best fits your needs.
+
+## Running Locally
+
+Perfect for development and testing before deploying to production.
+
+### Start the Server
+
+<Tabs items={['npm', 'yarn', 'bun']}>
+  <Tab value="npm">
+    ```bash
+    npm run dev:backend
+    ```
+  </Tab>
+  <Tab value="yarn">
+    ```bash
+    yarn dev:backend
+    ```
+  </Tab>
+  <Tab value="bun">
+    ```bash
+    bun run dev:backend
+    ```
+  </Tab>
+</Tabs>
+
+You should see:
+```bash
+Server listening on http://localhost:8069
+```
+
+### Your Base URL
+
+When running locally, use:
+```typescript
+const scrawn = new Scrawn({
+  apiKey: process.env.SCRAWN_KEY,
+  baseURL: 'http://localhost:8069', // [!code highlight]
+});
+```
+
+<Callout type="info" title="Development Mode">
+The `dev:backend` command runs with hot-reload enabled. Any code changes will automatically restart the server.
+</Callout>
+
+
+
+## Production Deployment
+
+Deploy your Scrawn backend to production with these simple options. All methods are straightforward and work out of the box.
+
+### Option 1: Railway (Easiest)
+
+Railway offers the simplest deployment experience with automatic builds and free tier.
+
+#### Steps:
+
+1. **Sign up at [Railway](https://railway.app/)** and connect your GitHub account
+
+2. **Click "New Project" → "Deploy from GitHub repo"**
+
+3. **Select your Scrawn repository**
+
+4. **Add Environment Variables** in the Railway dashboard:
+   ```bash
+   HMAC_SECRET=your_hmac_secret_here
+   DATABASE_URL=your_database_url_here
+   LEMON_SQUEEZY_API_KEY=your_api_key
+   LEMON_SQUEEZY_STORE_ID=your_store_id
+   LEMON_SQUEEZY_VARIANT_ID=your_variant_id
+   ```
+
+5. **Configure the Start Command:**
+   - Go to Settings → Deploy
+   - Set Start Command to: `bun run start`
+
+6. **Deploy!** Railway will automatically build and deploy your app
+
+#### Your Base URL:
+
+Railway provides a URL like: `https://your-app-name.up.railway.app`
+
+```typescript
+const scrawn = new Scrawn({
+  apiKey: process.env.SCRAWN_KEY,
+  baseURL: 'https://your-app-name.up.railway.app', // [!code highlight]
+});
+```
+
+<Callout type="success" title="Free Tier">
+Railway offers $5 in free credits monthly, which is plenty for small projects!
+</Callout>
+
+
+
+### Option 2: Render
+
+Render is another great option with a generous free tier and simple deployment.
+
+#### Steps:
+
+1. **Sign up at [Render](https://render.com/)** and connect your GitHub
+
+2. **Click "New +" → "Web Service"**
+
+3. **Connect your Scrawn repository**
+
+4. **Configure the service:**
+   - Name: `scrawn-backend`
+   - Environment: `Node`
+   - Build Command: `bun install`
+   - Start Command: `bun run start`
+
+5. **Add Environment Variables:**
+   - Go to the Environment tab
+   - Add all variables from your `.env.local`:
+     ```bash
+     HMAC_SECRET=your_hmac_secret_here
+     DATABASE_URL=your_database_url_here
+     LEMON_SQUEEZY_API_KEY=your_api_key
+     LEMON_SQUEEZY_STORE_ID=your_store_id
+     LEMON_SQUEEZY_VARIANT_ID=your_variant_id
+     ```
+
+6. **Create Web Service** and wait for deployment
+
+#### Your Base URL:
+
+Render provides: `https://scrawn-backend.onrender.com`
+
+```typescript
+const scrawn = new Scrawn({
+  apiKey: process.env.SCRAWN_KEY,
+  baseURL: 'https://scrawn-backend.onrender.com', // [!code highlight]
+});
+```
+
+<Callout type="warn" title="Free Tier Limitation">
+Render's free tier spins down after 15 minutes of inactivity. The first request after sleeping may take 30-60 seconds.
+</Callout>
+
+
+
+### Option 3: Fly.io
+
+Fly.io offers excellent performance and deploys close to your users globally.
+
+#### Steps:
+
+1. **Install Fly CLI:**
+   <Tabs items={['macOS', 'Linux', 'Windows']}>
+     <Tab value="macOS">
+       ```bash
+       brew install flyctl
+       ```
+     </Tab>
+     <Tab value="Linux">
+       ```bash
+       curl -L https://fly.io/install.sh | sh
+       ```
+     </Tab>
+     <Tab value="Windows">
+       ```powershell
+       iwr https://fly.io/install.ps1 -useb | iex
+       ```
+     </Tab>
+   </Tabs>
+
+2. **Login to Fly:**
+   ```bash
+   fly auth login
+   ```
+
+3. **Create a `fly.toml` file in scrawn project root:**
+   ```toml
+   app = "scrawn-backend"
+   primary_region = "iad"
+
+   [build]
+     dockerfile = "Dockerfile"
+
+   [env]
+     PORT = "8069"
+
+   [[services]]
+     internal_port = 8069
+     protocol = "tcp"
+
+     [[services.ports]]
+       handlers = ["http"]
+       port = 80
+
+     [[services.ports]]
+       handlers = ["tls", "http"]
+       port = 443
+   ```
+
+4. **Create a `Dockerfile` in your project root:**
+   ```dockerfile
+   FROM oven/bun:1
+
+   WORKDIR /app
+
+   COPY package.json bun.lockb ./
+   RUN bun install --frozen-lockfile
+
+   COPY . .
+
+   EXPOSE 8069
+
+   CMD ["bun", "run", "start"]
+   ```
+
+5. **Set your secrets:**
+   ```bash
+   fly secrets set HMAC_SECRET="your_hmac_secret"
+   fly secrets set DATABASE_URL="your_database_url"
+   fly secrets set LEMON_SQUEEZY_API_KEY="your_api_key"
+   fly secrets set LEMON_SQUEEZY_STORE_ID="your_store_id"
+   fly secrets set LEMON_SQUEEZY_VARIANT_ID="your_variant_id"
+   ```
+
+6. **Deploy:**
+   ```bash
+   fly launch
+   fly deploy
+   ```
+
+#### Your Base URL:
+
+Fly provides: `https://scrawn-backend.fly.dev`
+
+```typescript
+const scrawn = new Scrawn({
+  apiKey: process.env.SCRAWN_KEY,
+  baseURL: 'https://scrawn-backend.fly.dev', // [!code highlight]
+});
+```
+
+## Understanding Base URLs
+
+The base URL is where your Scrawn backend is accessible. Here's what to use in different scenarios:
+
+### Development (Local)
+```typescript
+baseURL: 'http://localhost:8069'
+```
+Use this when running the backend locally on your machine.
+
+### Production (Platform as a Service)
+```typescript
+// Railway
+baseURL: 'https://your-app.up.railway.app'
+
+// Render
+baseURL: 'https://scrawn-backend.onrender.com'
+
+// Fly.io
+baseURL: 'https://scrawn-backend.fly.dev'
+```
+Use the URL provided by your hosting platform.
+
+### Production (Self-Hosted with Reverse Proxy)
+```typescript
+baseURL: 'https://your-domain.com'
+```
+Use your domain name when you've set up Nginx/Caddy.
+
+### Production (Self-Hosted without Reverse Proxy)
+```typescript
+baseURL: 'http://your-server-ip:8069'
+```
+⚠️ **Not recommended for production!** Only use this for testing.
+
+<Callout type="info" title="Port 8069">
+Scrawn backend runs on port **8069** by default. Make sure this port is:
+- Available on your server
+- Not blocked by firewall rules
+- Properly proxied if using a reverse proxy
+</Callout>
+
+## Verifying Deployment
+
+After deployment, verify your backend is working:
+
+### Using curl:
+```bash
+# Test basic connectivity (should return method not allowed or similar)
+curl -i https://your-base-url
+```
+
+### Using the SDK:
+```typescript
+import { Scrawn } from '@scrawn/core';
+
+const scrawn = new Scrawn({
+  apiKey: process.env.SCRAWN_KEY,
+  baseURL: 'https://your-base-url',
+});
+
+try {
+  // Try creating a checkout link
+  const result = await scrawn.createCheckoutLink({
+    userId: 'test-user-id',
+  });
+  console.log('✅ Backend is working!', result);
+} catch (error) {
+  console.error('❌ Backend error:', error);
+}
+```
+
+
+
+## Troubleshooting
+
+### "Connection Refused" Error
+
+**Problem:** Can't connect to the backend
+
+**Solutions:**
+- Verify the backend is running: `pm2 status` (if using PM2)
+- Check if port 8069 is accessible: `netstat -tulpn | grep 8069`
+- Verify firewall rules allow traffic on port 8069
+- Check if your reverse proxy is properly configured
+
+### "Environment Variable Not Set" Error
+
+**Problem:** Missing required environment variables
+
+**Solutions:**
+- Verify all variables from `.env.example` are set
+- Restart your server after adding variables
+- For platform deployments, check the dashboard environment variables section
+
+### Database Connection Errors
+
+**Problem:** Can't connect to database
+
+**Solutions:**
+- Verify your `DATABASE_URL` is correct
+- Check if your database allows connections from your server's IP
+- For cloud databases, ensure SSL is properly configured
+- Test the connection string manually: `psql $DATABASE_URL`
+
+### Port Already in Use
+
+**Problem:** Port 8069 is already taken
+
+**Solutions:**
+- Find and kill the process using the port: `lsof -i :8069`
+- Change the port in `server.ts` if needed
+- Update your reverse proxy configuration if you change the port
+
+
+
+## Next Steps
+
+Now that your backend is deployed, integrate it with your application:
+
+<Cards>
+  <Card href="/docs/sdk-guide" title="SDK Guide">
+    Learn how to use the Scrawn SDK in your application
+  </Card>
+  <Card href="/docs/dashboard-setup" title="Dashboard Setup">
+    Set up your admin dashboard to manage API keys and monitor usage
+  </Card>
+</Cards>

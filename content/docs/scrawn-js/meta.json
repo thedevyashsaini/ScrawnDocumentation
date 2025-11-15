@@ -1,0 +1,11 @@
+{
+  "title": "Scrawn.js",
+  "pages": [
+    "index",
+    "sdk-call-event",
+    "middleware-call",
+    "collect-payment",
+    "framework-integration",
+    "advanced-usage"
+  ]
+}
