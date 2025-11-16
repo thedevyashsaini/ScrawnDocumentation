@@ -4,6 +4,13 @@ import { baseOptions } from '@/lib/layout.shared';
 import { source } from '@/lib/source';
 import './global.css';
 import { AISearchTrigger } from '@/components/search';
+import { Analytics } from "@vercel/analytics/next"
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Scrawn | The End-to-end billing infrastructure for builders',
+  description: 'Track usage, manage API keys, process payments. Stop wrestling with payment gateway webhooks and start shipping features.',
+};
 
 export default function Layout({ children }: LayoutProps<'/'>) {
   return (
@@ -14,6 +21,7 @@ export default function Layout({ children }: LayoutProps<'/'>) {
       <link rel="manifest" href="/site.webmanifest"/>
       <body className="flex flex-col min-h-screen">
         <RootProvider>
+          <Analytics/>
           <AISearchTrigger />
           <DocsLayout {...baseOptions()} sidebar={{enabled: false}} tree={source.pageTree} githubUrl='https://github.com/ScrawnDotDev/Scrawn'>
             {children}
