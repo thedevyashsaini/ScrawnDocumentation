@@ -1,0 +1,150 @@
+---
+title: Contributing
+description: Learn how to contribute to Scrawn
+---
+
+# Contributing to Scrawn
+
+Thank you for your interest in contributing to Scrawn! We're building open-source billing infrastructure for developers, and we welcome contributions from the community.
+
+<Callout type="info" title="Google Summer of Code 2026">
+We're participating in GSoC 2026! Check out our [project ideas](/docs/contributing/gsoc-2026) if you're a student interested in contributing.
+</Callout>
+
+## Choose Your Area
+
+Scrawn consists of multiple repositories under the [ScrawnDotDev](https://github.com/ScrawnDotDev) organization. Pick the one that matches your interest:
+
+### Backend (gRPC Server)
+**Repository**: [github.com/ScrawnDotDev/Scrawn](https://github.com/ScrawnDotDev/Scrawn)  
+**Tech Stack**: TypeScript, gRPC, PostgreSQL
+**Good for**: Backend development, database optimization, API design
+
+The core backend handles event tracking, usage calculation, and payment processing with a beautiful event-driven architecture. All contributions must preserve this event-driven design. See [Quick Start](/docs/scrawn/quick-start) for setup.
+
+### SDK (Scrawn.js)
+**Repository**: [github.com/ScrawnDotDev/Scrawn.js](https://github.com/ScrawnDotDev/Scrawn.js)  
+**Tech Stack**: TypeScript  
+**Good for**: SDK design, developer experience, client libraries
+
+The TypeScript/JavaScript SDK that developers integrate into their applications. See [SDK Guide](/docs/scrawn/scrawn-js) for usage.
+
+### Dashboard
+**Repository**: [github.com/ScrawnDotDev/Dashboard](https://github.com/ScrawnDotDev/Dashboard)  
+**Tech Stack**: Next.js, React, TypeScript  
+**Good for**: Frontend development, UI/UX, data visualization
+
+The admin dashboard for monitoring events, managing API keys, and viewing analytics. See [Dashboard Setup](/docs/scrawn/dashboard-setup) for details.
+
+### Documentation
+**Repository**: [github.com/ScrawnDotDev/Documentation](https://github.com/ScrawnDotDev/Documentation)  
+**Tech Stack**: Next.js, Fumadocs, MDX  
+**Good for**: Technical writing, examples, tutorials
+
+Help improve our docs by fixing typos, adding examples, or writing guides.
+
+## How to Contribute
+
+### 1. Find an Issue
+
+- Browse [good first issues](https://github.com/ScrawnDotDev/Scrawn/labels/good%20first%20issue)
+- Check [help wanted](https://github.com/ScrawnDotDev/Scrawn/labels/help%20wanted) labels
+- Review our [GSoC 2026 project ideas](/docs/contributing/gsoc-2026)
+
+### 2. Set Up Your Environment
+
+For backend contributions:
+```bash
+git clone https://github.com/ScrawnDotDev/Scrawn.git
+cd Scrawn
+bun install
+```
+
+Follow the [Quick Start](/docs/scrawn/quick-start) guide for complete setup including database configuration.
+
+### 3. Make Your Changes
+
+- Create a feature branch: `git checkout -b feature/your-feature`
+- Write clean, well-documented code
+- Add tests for new functionality
+- Ensure all tests pass: `bun test`
+
+### 4. Submit a Pull Request
+
+- Push your branch: `git push origin feature/your-feature`
+- Open a PR with a clear description
+- Link related issues
+- Wait for review and address feedback
+
+## Contribution Guidelines
+
+### Code Quality
+
+- Follow existing code style and conventions
+- Keep PRs focused and atomic
+- Add JSDoc comments for public APIs
+- Ensure TypeScript types are properly defined
+
+### Commit Standards
+
+All commits *must* follow [Conventional Commits](https://www.conventionalcommits.org/) format and be signed off:
+
+```bash
+feat: add payment collection endpoint
+fix: resolve database connection timeout
+docs: update API reference examples
+chore: upgrade dependencies
+```
+
+**Sign your commits**:
+```bash
+git commit -s -m "feat: add new feature"
+```
+
+This adds `Signed-off-by: Your Name <your.email@example.com>` to your commit message, certifying that you have the right to submit the code under the project's license.
+
+### Testing
+
+- Write unit tests for new features
+- Update existing tests if behavior changes
+- Ensure all tests pass before submitting
+- Add integration tests for critical paths
+
+### Documentation
+
+- Update docs for API changes
+- Add examples for new features
+- Keep README files current
+- Write clear code comments
+
+## Communication
+
+### Before Starting
+
+1. **Check existing work**: Search issues and PRs to avoid duplicates
+2. **Discuss major changes**: Open an issue to discuss large features
+3. **Ask questions**: Use GitHub Discussions for clarifications
+
+### Get Help
+
+- **Discord**: [Join our community](https://discord.gg/scrawn) for real-time chat
+- **GitHub Discussions**: [Ask questions](https://github.com/ScrawnDotDev/Scrawn/discussions) for async discussion
+- **Issues**: [Report bugs](https://github.com/ScrawnDotDev/Scrawn/issues) or request features
+
+## Code of Conduct
+
+We are committed to providing a welcoming and inclusive environment. Please:
+
+- Be respectful and professional
+- Provide constructive feedback
+- Help others learn and grow
+- Follow our [Code of Conduct](https://github.com/ScrawnDotDev/Scrawn/blob/main/CODE_OF_CONDUCT.md)
+
+## Recognition
+
+Contributors are recognized in:
+- Repository contributors list
+- Release notes for significant contributions
+- Special mention for GSoC participants
+
+Thank you for helping make Scrawn better! 🚀

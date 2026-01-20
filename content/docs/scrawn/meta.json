@@ -1,0 +1,13 @@
+{
+  "title": "Scrawn",
+  "root": true,
+  "icon": "Zap",
+  "pages": [
+    "index",
+    "quick-start",
+    "backend-deployment",
+    "dashboard-setup",
+    "scrawn-js",
+    "api-reference"
+  ]
+}

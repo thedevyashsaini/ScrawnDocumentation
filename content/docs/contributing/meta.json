@@ -1,0 +1,9 @@
+{
+  "title": "Contributing",
+  "root": true,
+  "icon": "GitPullRequest",
+  "pages": [
+    "index",
+    "gsoc-2026"
+  ]
+}

@@ -1,0 +1,216 @@
+---
+title: GSoC 2026 Ideas
+description: Google Summer of Code 2026 project ideas for Scrawn
+---
+
+# GSoC 2026 Project Ideas
+
+Scrawn is participating in [Google Summer of Code 2026](https://summerofcode.withgoogle.com/)! We're excited to mentor students and help them contribute to open-source billing infrastructure.
+
+## About Scrawn
+
+Scrawn is a self-hosted billing infrastructure built with event-driven architecture that lets developers integrate usage-based billing with a single function call. We provide:
+
+- **gRPC Backend**: High-performance event-driven server with PostgreSQL, Kafka, and HTTP/2 ([github.com/ScrawnDotDev/Scrawn](https://github.com/ScrawnDotDev/Scrawn))
+- **TypeScript SDK**: gRPC-powered client library with persistent connections ([github.com/ScrawnDotDev/Scrawn.js](https://github.com/ScrawnDotDev/Scrawn.js))
+- **Admin Dashboard**: Next.js-based interface for monitoring and management ([github.com/ScrawnDotDev/Dashboard](https://github.com/ScrawnDotDev/Dashboard))
+
+**Organization**: [ScrawnDotDev](https://github.com/ScrawnDotDev)
+
+**Tech Stack**: TypeScript, gRPC/HTTP2, PostgreSQL, Kafka, Next.js, Drizzle ORM, Connect-RPC
+
+## Prerequisites
+
+Before applying, we recommend:
+
+1. **Explore the project**: Try deploying Scrawn locally using our [Quick Start](/docs/scrawn/quick-start) guide
+2. **Make a contribution**: Fix a bug or improve documentation to familiarize yourself with the codebase
+3. **Join our community**: Introduce yourself on [Discord](https://discord.gg/scrawn) and participate in discussions
+4. **Read GSoC guidelines**: Familiarize yourself with [GSoC student responsibilities](https://google.github.io/gsocguides/student/)
+
+## How to Apply
+
+1. **Select a project**: Choose from the ideas below or propose your own
+2. **Write a proposal**: Follow the [GSoC proposal template](https://google.github.io/gsocguides/student/writing-a-proposal)
+3. **Include**:
+   - Your background and relevant experience
+   - Detailed implementation plan with timeline
+   - Deliverables and milestones
+   - How you'll communicate progress
+4. **Submit**: Through the [GSoC program website](https://summerofcode.withgoogle.com/) during the application period
+
+## Project Ideas
+
+### 1. Scalable AI Token Ingestion System
+
+`AI/ML` `Backend` `SDK` `Distributed Systems`
+
+**Description**: Build a fault-tolerant streaming system for real-time AI token usage tracking with automatic recovery and stateless backend design.
+
+The SDK currently uses gRPC with HTTP/2 for persistent connections. This project extends that to handle streaming AI token ingestion with robust failure recovery. When streaming AI tokens, the SDK establishes a dedicated stream with a unique stream ID. As tokens flow in, they're queued to Kafka on the backend. The backend processes events continuously but only acknowledges completion when the entire stream finishes, maintaining statelessness for horizontal scaling.
+
+**Key Features**:
+- **Stream Recovery**: If the SDK-to-backend connection drops mid-stream, the SDK reconnects with the stream ID to resume
+- **Backend Failover**: If a backend instance crashes during processing, another instance picks up using the stream ID from Kafka
+- **Response Queueing**: Completed stream responses are temporarily stored in a queue with stream IDs. If the SDK reconnects within the timeout window, it retrieves the response; otherwise, entries expire
+- **Developer Experience**: The complexity is abstracted inside the SDK—developers just call a function and get back a response, with all the webhook-style async handling hidden
+
+**Skills Required**:
+- TypeScript
+- gRPC/HTTP2 streaming
+- Kafka message queues
+- Distributed systems concepts
+- Error handling and retry logic
+
+**Difficulty**: Hard
+
+**Expected Outcomes**:
+- Streaming API implementation in SDK with automatic reconnection
+- Kafka-based event queue with stream ID tracking
+- Stateless backend processing with acknowledgment only on completion
+- Response queue with TTL for completed streams
+- Comprehensive error handling and recovery tests
+- **Must preserve the event-driven architecture** of the backend
+
+**Repositories**: [Scrawn](https://github.com/ScrawnDotDev/Scrawn), [Scrawn.js](https://github.com/ScrawnDotDev/Scrawn.js)
+
+**Mentors**: [Jaydeep Bejoy](https://www.linkedin.com/in/jayadeep-bejoy-502263282), [Devyash Saini](https://www.linkedin.com/in/thedevyashsaini)
+
+**Expected Size**: 350 hours
+
+---
+
+### 2. ML-Powered Dashboard Insights
+
+`ML/AI` `Frontend` `Dashboard`
+
+**Description**: Integrate lightweight machine learning models into the dashboard to provide predictive analytics for usage patterns and revenue forecasting.
+
+Add intelligent insights directly into the dashboard using client-side or edge-deployed ML models. Analyze historical usage data to predict future trends, identify anomalies, and provide actionable recommendations. This keeps the prediction layer lightweight and doesn't add heavy compute requirements to the core backend.
+
+**Skills Required**:
+- Next.js/React
+- Machine learning basics (TensorFlow.js or similar)
+- Data visualization (Chart.js, Recharts)
+- TypeScript
+- Time series forecasting
+
+**Difficulty**: Medium
+
+**Expected Outcomes**:
+- Integration of lightweight ML model for usage prediction
+- Revenue forecasting based on historical data
+- Anomaly detection for unusual usage patterns
+- Interactive visualizations for predicted vs actual metrics
+- Dashboard UI components for insights display
+- Model training pipeline documentation
+
+**Repository**: [Dashboard](https://github.com/ScrawnDotDev/Dashboard)
+
+**Mentors**: [Devyash Saini](https://www.linkedin.com/in/thedevyashsaini), [Jaydeep Bejoy](https://www.linkedin.com/in/jayadeep-bejoy-502263282)
+
+**Expected Size**: 175 hours
+
+---
+
+### 3. Lightweight In-Process Sidecar for SDK-Side Batching
+
+`SDK` `Performance` `Distributed Systems`
+
+**Description**: Build an in-process sidecar component within the SDK for intelligent event batching and local buffering before transmission to the backend.
+
+Create a lightweight sidecar module that runs within the application process alongside the SDK. It batches events intelligently based on time windows, event counts, or payload size thresholds. This reduces network overhead and backend load while maintaining reliability through local persistence and retry mechanisms.
+
+**Skills Required**:
+- TypeScript
+- Concurrency and async patterns
+- Local storage/buffering strategies
+- gRPC batching
+- Performance optimization
+
+**Difficulty**: Medium
+
+**Expected Outcomes**:
+- In-process batching module with configurable thresholds
+- Local event buffer with persistence for reliability
+- Automatic flush on threshold or time-based triggers
+- Retry logic for failed batch transmissions
+- Minimal performance overhead on host application
+- Configuration options for batch size and flush intervals
+- Comprehensive unit and integration tests
+
+**Repository**: [Scrawn.js](https://github.com/ScrawnDotDev/Scrawn.js)
+
+**Mentors**: [Devyash Saini](https://www.linkedin.com/in/thedevyashsaini), [Jaydeep Bejoy](https://www.linkedin.com/in/jayadeep-bejoy-502263282)
+
+**Expected Size**: 175 hours
+
+---
+
+### 4. GraphQL API Layer
+
+`Backend` `API Design` `GraphQL`
+
+**Description**: Add a GraphQL API layer on top of the existing gRPC backend for improved developer experience and flexible data querying.
+
+Build a GraphQL gateway that wraps the gRPC backend services, providing a unified query interface. Support queries, mutations, and real-time subscriptions for events. This gives developers a modern API option while maintaining the performance benefits of gRPC internally.
+
+**Skills Required**:
+- GraphQL (Apollo Server, GraphQL Yoga, or similar)
+- TypeScript/Node.js
+- gRPC client integration
+- API design
+- Real-time subscriptions (WebSockets)
+
+**Difficulty**: Medium
+
+**Expected Outcomes**:
+- GraphQL schema covering all gRPC services
+- Query and mutation resolvers
+- Real-time subscriptions for event streams
+- GraphQL Playground integration for testing
+- Authentication and authorization pass-through
+- Comprehensive documentation and examples
+- Performance benchmarks vs direct gRPC
+
+**Repository**: [Scrawn](https://github.com/ScrawnDotDev/Scrawn)
+
+**Mentors**: [Jaydeep Bejoy](https://www.linkedin.com/in/jayadeep-bejoy-502263282), [Devyash Saini](https://www.linkedin.com/in/thedevyashsaini)
+
+**Expected Size**: 175 hours
+
+---
+
+## Timeline
+
+Following the [GSoC 2026 timeline](https://developers.google.com/open-source/gsoc/timeline):
+
+- **January - February 2026**: Organizations apply
+- **March 2026**: Student application period opens
+- **April 2026**: Community bonding period
+- **May - August 2026**: Coding period
+- **September 2026**: Final evaluations
+
+## Getting in Touch
+
+- **Discord**: [Join our community](https://discord.gg/scrawn) for real-time discussions
+- **GitHub Discussions**: [Ask questions](https://github.com/ScrawnDotDev/Scrawn/discussions) for project-related queries
+- **Email**: gsoc@scrawn.dev for application-specific questions
+
+## Resources
+
+- [GSoC Student Guide](https://google.github.io/gsocguides/student/)
+- [Writing a Proposal](https://google.github.io/gsocguides/student/writing-a-proposal)
+- [Scrawn Documentation](/docs/scrawn)
+- [GitHub Organization](https://github.com/ScrawnDotDev)
+
+## Propose Your Own Idea
+
+Have a different idea that would benefit Scrawn? We're open to student-proposed projects! Make sure to:
+
+1. **Discuss first**: Open a GitHub Discussion to pitch your idea
+2. **Align with goals**: Ensure it fits with Scrawn's mission and architecture
+3. **Define scope**: Clearly outline what can be accomplished in 12 weeks
+4. **Get feedback**: Work with mentors to refine the proposal
+
+We look forward to your contributions!
