@@ -11,13 +11,13 @@ Scrawn is participating in [Google Summer of Code 2026](https://summerofcode.wit
 
 Scrawn is a self-hosted billing infrastructure built with event-driven architecture that lets developers integrate usage-based billing with a single function call. We provide:
 
-- **gRPC Backend**: High-performance event-driven server with PostgreSQL, Kafka, and HTTP/2 ([github.com/ScrawnDotDev/Scrawn](https://github.com/ScrawnDotDev/Scrawn))
+- **gRPC Backend**: High-performance event-driven server with PostgreSQL, and HTTP/2 ([github.com/ScrawnDotDev/Scrawn](https://github.com/ScrawnDotDev/Scrawn))
 - **TypeScript SDK**: gRPC-powered client library with persistent connections ([github.com/ScrawnDotDev/Scrawn.js](https://github.com/ScrawnDotDev/Scrawn.js))
 - **Admin Dashboard**: Next.js-based interface for monitoring and management ([github.com/ScrawnDotDev/Dashboard](https://github.com/ScrawnDotDev/Dashboard))
 
 **Organization**: [ScrawnDotDev](https://github.com/ScrawnDotDev)
 
-**Tech Stack**: TypeScript, gRPC/HTTP2, PostgreSQL, Kafka, Next.js, Drizzle ORM, Connect-RPC
+**Tech Stack**: TypeScript, gRPC/HTTP2, PostgreSQL, Next.js, Drizzle ORM, Connect-RPC
 
 ## Prerequisites
 
@@ -178,6 +178,48 @@ Build a GraphQL gateway that wraps the gRPC backend services, providing a unifie
 **Mentors**: [Jaydeep Bejoy](https://www.linkedin.com/in/jayadeep-bejoy-502263282), [Devyash Saini](https://www.linkedin.com/in/thedevyashsaini)
 
 **Expected Size**: 175 hours
+
+---
+
+### 5. Interactive SDK Integration Playground
+
+`Developer Experience` `Frontend` `Interactive` `Documentation`
+
+**Description**: Build an interactive playground on the documentation site that demonstrates how easy it is to integrate the Scrawn SDK with real-time code editing and execution simulation.
+
+Create a fully interactive, browser-based environment where developers can experiment with SDK integration patterns without setting up a local environment. The playground simulates the entire SDK workflow—from initialization to event tracking to payment collection—with live code editing, syntax highlighting, and visual feedback. Users can see how the SDK works in different frameworks (Express, Next.js, tRPC) with instant visual results showing API calls, event queues, and backend responses.
+
+**Key Features**:
+- **Live Code Editor**: Monaco Editor with TypeScript support and autocomplete
+- **Framework Templates**: Pre-built examples for Express, Next.js, Fastify, tRPC
+- **Visual Flow Simulation**: Animated visualization showing SDK → gRPC → Backend → Response flow
+- **Interactive Console**: Real-time logs showing event tracking, gRPC calls, and responses
+- **Step-by-Step Tutorials**: Guided walkthroughs integrated into the playground
+
+**Skills Required**:
+- Next.js
+- Monaco Editor or CodeMirror integration
+- State management
+- Animation libraries (Framer Motion, React Spring)
+- TypeScript
+- UI/UX design
+
+**Difficulty**: Hard
+
+**Expected Outcomes**:
+- Interactive code editor with syntax highlighting and IntelliSense
+- Multiple framework templates (Express, Next.js, Fastify, tRPC)
+- Visual flow diagram showing SDK execution path
+- Real-time simulation of API calls and responses
+- Mobile-responsive design
+- Integration with existing documentation site
+- Tutorial mode with step-by-step guidance
+
+**Repository**: [Documentation](https://github.com/ScrawnDotDev/Documentation)
+
+**Mentors**: [Devyash Saini](https://www.linkedin.com/in/thedevyashsaini), [Jaydeep Bejoy](https://www.linkedin.com/in/jayadeep-bejoy-502263282)
+
+**Expected Size**: 350 hours
 
 ---
 

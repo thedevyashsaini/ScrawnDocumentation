@@ -413,9 +413,9 @@ Payment and checkout link creation errors.
 | `CONFIGURATION_ERROR` | `FAILED_PRECONDITION` | Payment system misconfigured | Check environment configuration |
 | `UNKNOWN` | `INTERNAL` | Unknown payment error | Contact support |
 
-| `UNKNOWN` | `INTERNAL` | Unknown payment error | Contact support |
+### Error Response Format
 
-### Error Response Format gRPC Connect error format:
+All backend errors follow the gRPC Connect error format:
 
 ```json
 {
@@ -431,9 +431,9 @@ Payment and checkout link creation errors.
 - `INTERNAL` - Internal server error
 - `FAILED_PRECONDITION` - Server not properly configured
 
-- `FAILED_PRECONDITION` - Server not properly configured
+## Types
 
-## TypestPayload
+### EventPayload
 
 ```typescript
 interface EventPayload {
@@ -504,7 +504,9 @@ interface MiddlewareEventConfig {
 
 Configuration for `middlewareEventConsumer`.
 
-## Utilitiesh
+## Utilities
+
+### matchPath
 
 ```typescript
 matchPath(path: string, pattern: string): boolean
@@ -534,7 +536,9 @@ matchPath('/api/users/123', '/api/**'); // true
 matchPath('/api/v1/users', '/api/v1/*'); // true
 ```
 
-## Authenticationequests require authentication via Bearer token in the `Authorization` header.
+## Authentication
+
+All API requests require authentication via Bearer token in the `Authorization` header.
 
 **API Key Format:**
 - Must start with `scrn_` prefix
@@ -570,8 +574,6 @@ Authorization: Bearer scrn_your_api_key
 - API keys are hashed using SHA-256 before storage
 - Original API keys are never stored in the database
 - API keys are cached in memory for performance (with TTL)
-- Expired API keys are automatically rejected
-
 - Expired API keys are automatically rejected
 
 ## Next Steps
