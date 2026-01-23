@@ -223,6 +223,49 @@ Create a fully interactive, browser-based environment where developers can exper
 
 ---
 
+### 6. Redis-Based API Key Cache with Instant Revocation
+
+`Backend` `Caching` `Distributed Systems` `Performance`
+
+**Description**: Replace the in-memory LRU cache with a Redis-based distributed cache system that enables instant API key revocation across all backend instances.
+
+The current system uses a local in-memory Map with LRU eviction (max 1000 entries, 5-minute TTL). While performant for single-instance deployments, it has critical limitations: revoked API keys remain cached until TTL expires (up to 5 minutes), and each backend replica maintains separate cache state. This project replaces the local cache with Redis, enabling instant revocation, shared state across instances, and better scalability.
+
+**Key Features**:
+- **Distributed Cache**: Shared Redis cache across all backend replicas
+- **Instant Revocation**: When an API key is revoked in the database, immediately invalidate it in Redis using pub/sub
+- **Backward Compatible**: Drop-in replacement for the existing `APIKeyCache` class interface
+- **Configurable TTL**: Maintain existing 5-minute TTL but make it configurable
+- **Graceful Degradation**: If Redis is unavailable, fall back to database queries (no caching)
+- **Connection Pooling**: Efficient Redis connection management with `ioredis`
+
+**Skills Required**:
+- TypeScript
+- Redis (caching, pub/sub, TTL management)
+- Distributed systems concepts
+- Connection pooling
+- Error handling and fallback strategies
+
+**Difficulty**: Easy
+
+**Expected Outcomes**:
+- `RedisAPIKeyCache` class implementing existing cache interface
+- Redis pub/sub system for revocation notifications
+- Fallback mechanism when Redis is unavailable
+- Configuration for Redis connection (host, port, password)
+- Migration guide from local cache to Redis
+- Performance benchmarks comparing local vs Redis cache
+- Unit and integration tests with Redis mocking
+- Docker Compose update including Redis service
+
+**Repository**: [Scrawn](https://github.com/ScrawnDotDev/Scrawn)
+
+**Mentors**: [Jaydeep Bejoy](https://www.linkedin.com/in/jayadeep-bejoy-502263282), [Devyash Saini](https://www.linkedin.com/in/thedevyashsaini)
+
+**Expected Size**: 90 hours
+
+---
+
 ## Timeline
 
 Following the [GSoC 2026 timeline](https://developers.google.com/open-source/gsoc/timeline):
