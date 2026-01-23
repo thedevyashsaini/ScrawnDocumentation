@@ -62,6 +62,44 @@ bun install
 
 Follow the [Quick Start](/docs/scrawn/quick-start) guide for complete setup including database configuration.
 
+For SDK contributions:
+```bash
+git clone https://github.com/ScrawnDotDev/Scrawn.js.git
+cd Scrawn.js
+bun install
+bun run build
+```
+
+#### Testing SDK Changes Locally
+
+When working on the SDK, you can test your changes in the examples without publishing:
+
+1. **Link the SDK package**:
+```bash
+cd packages/scrawn
+bun link
+```
+
+2. **Link in your test project**:
+```bash
+cd ../../examples  # or any other project
+bun link @scrawn/core
+```
+
+3. **Run examples** (use Node to avoid Bun's HTTP/2 bugs):
+```bash
+cd examples
+npx ts-node middleware-usage.ts
+npx ts-node ai-token-stream-usage.ts
+npx ts-node sdkcall-usage.ts
+```
+
+After making changes to the SDK, rebuild and examples will automatically use the updated code:
+```bash
+cd packages/scrawn
+bun run build
+```
+
 ### 3. Make Your Changes
 
 - Create a feature branch: `git checkout -b feature/your-feature`
@@ -116,6 +154,22 @@ This adds `Signed-off-by: Your Name <your.email@example.com>` to your commit mes
 - Add examples for new features
 - Keep README files current
 - Write clear code comments
+
+### SDK Examples Requirement
+
+**Important**: Every new abstraction layer or event ingestion method in the SDK **MUST** have a corresponding example file in `Scrawn.js/examples/`.
+
+For example:
+- `sdkCallEventConsumer()` → `examples/sdkcall-usage.ts`
+- `middlewareEventConsumer()` → `examples/middleware-usage.ts`
+- `aiTokenStreamConsumer()` → `examples/ai-token-stream-usage.ts`
+
+New examples should:
+- Basic usage patterns
+- Include inline comments explaining key concepts
+- Use TypeScript with proper typing
+- Load environment variables from `.env.local`
+- Be runnable with `npx ts-node <example-file>.ts`
 
 ## Communication
 
